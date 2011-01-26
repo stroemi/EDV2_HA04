@@ -50,7 +50,7 @@ if (identity == MASTER)
 	/* Uebermitteln von h sowie i_u und i_o der einzelnen Prozesse */	
 	for (targetProcess = 0; targetProcess < processCount; targetProcess++) 
 	{
-		/* h Uebertragen */
+		/* h wird Uebertragen */
 		if (targetProcess != MASTER)
 		{
 			MPI_Send(&h, 1, MPI_DOUBLE, targetProcess, H_TRANSFER, MPI_COMM_WORLD);
