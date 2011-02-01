@@ -1,3 +1,6 @@
 pi_mpi
 pi_mpi_time
 results
+parpi
+*.swp
+*.swo
