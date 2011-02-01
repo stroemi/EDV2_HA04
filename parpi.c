@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <mpi.h>
 
@@ -28,7 +29,7 @@ double f(double x)
    Dabei werden die Balkenhöhen hoch( )gestapelt
 */
 
-double calculate_bars_height(h, left, right) 
+double calculate_bars_height(double h, int left, int right) 
 {
     double hoeh = 0.0;
     int i;
@@ -41,7 +42,7 @@ double calculate_bars_height(h, left, right)
         }
     } else {
         /* leeres Interval */
-        return 0.0
+        return 0.0;
     }
 
     return hoeh;
@@ -63,6 +64,7 @@ int main(int argc, char *argv[])
     int left, right;
     double pi_part, tmp, pi;
     int p; /* Laufvariable für prozesse */
+    int intervals_per_process;
 
 
     /*========================== Devide  ============================================*/
@@ -103,9 +105,9 @@ int main(int argc, char *argv[])
                 right = interval_count;
             }
 
-            MPI_Send(&h, 1, MPI_DOUBLE, target_process, GiveH, World);
-            MPI_Send(&left, 1, MPI_INT, target_process, GiveIL, World);
-            MPI_Send(&right, 1, MPI_INT, target_process, GiveIR, World);
+            MPI_Send(&h, 1, MPI_DOUBLE, p, GiveH, World);
+            MPI_Send(&left, 1, MPI_INT, p, GiveIL, World);
+            MPI_Send(&right, 1, MPI_INT, p, GiveIR, World);
         }  /* each process */
         
     } else { /* in slave */
@@ -115,7 +117,7 @@ int main(int argc, char *argv[])
     }
     /*========================== Calculate ============================================*/
 
-    if (me == MASTER) {
+    if (me == Master) {
         pi_part = calculate_bars_height(h, 1, intervals_per_process);
     } else { /* I am slave */
         pi_part = calculate_bars_height(h, left, right);
@@ -123,14 +125,14 @@ int main(int argc, char *argv[])
 
     /*========================== Conquer ============================================*/
     
-    if (me == MASTER) {
+    if (me == Master) {
         pi = pi_part;
         for (p=1; p < process_count; p++) {
             MPI_Recv(&tmp, 1, MPI_DOUBLE, p, ReturnP, World, &status);
             pi += tmp;
         }
         pi *= 4.0 * h;
-        printf("Pi ist näherungsweis %.16f, die Abweichung ist %.16f\n"
+        printf("Pi ist näherungsweis %.16f, die Abweichung ist %.16f\n",
                 pi, fabs(PI25 - pi)
                 );
     } else { /* I am slave */
