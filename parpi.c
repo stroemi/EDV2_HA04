@@ -52,6 +52,12 @@ double calculate_bars_height(double h, int left, int right)
 int main(int argc, char *argv[])
 {
     int process_count, interval_count, me;
+    double h;
+    int left, right;
+    double pi_part, tmp, pi;
+    int p; /* Laufvariable für prozesse */
+    int intervals_per_process;
+
     MPI_Status status;
 
     /* MPI hochfahren */
@@ -59,12 +65,6 @@ int main(int argc, char *argv[])
     MPI_Comm_size(World, &process_count);
     /* Wer bin ich, und wenn ja wie viele? */
     MPI_Comm_rank(World, &me);
-
-    double h;
-    int left, right;
-    double pi_part, tmp, pi;
-    int p; /* Laufvariable für prozesse */
-    int intervals_per_process;
 
 
     /*========================== Devide  ============================================*/
