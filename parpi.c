@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
     if (me == Master) {
 
         printf("Wieviele Intervalle? ");
+        fflush(stdout);
         scanf("%d", &interval_count); 
 
         if (interval_count <= 0) {
