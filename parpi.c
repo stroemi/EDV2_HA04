@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
             pi += tmp;
         }
         pi *= 4.0 * h;
-        printf("Pi ist näherungsweis %.16f, die Abweichung ist %.16f\n",
+        printf("Pi ist näherungsweise %.16f, die Abweichung ist %.16f\n",
                 pi, fabs(PI25 - pi)
                 );
     } else { /* I am slave */
