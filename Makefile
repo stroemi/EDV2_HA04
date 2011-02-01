@@ -1,4 +1,4 @@
-all: pi_mpi
+all: parpi
 
-pi_mpi: pi_mpi.c
-	mpicc -o pi_mpi pi_mpi.c 
+parpi: parpi.c
+	mpicc -o parpi parpi.c 
